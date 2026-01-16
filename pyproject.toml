@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data_challenge"
+version = "0.1.0"
+description = "Kedro pipeline for French medical document processing with OCR, DrBERT event extraction, and patient timeline aggregation"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+dependencies = [
+    "kedro>=0.18.0,<0.19.0",
+    "kedro-datasets[pandas.CSVDataSet,pickle.PickleDataSet]>=1.0.0",
+    "pandas>=1.3.0",
+    "transformers>=4.20.0",
+    "torch>=1.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "isort>=5.10.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.kedro]
+package_name = "data_challenge"
+project_name = "Medical Document Processing"
+kedro_init_version = "0.18.14"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

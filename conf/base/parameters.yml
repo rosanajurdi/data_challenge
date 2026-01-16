@@ -1,0 +1,40 @@
+# Medical Document Processing Pipeline - Parameters
+
+# Pipeline-wide parameters
+medical_processing:
+  # Event types to detect
+  event_types:
+    - "Diagnosis"
+    - "Treatment"
+    - "Complications"
+    - "Follow-up"
+  
+  # Model configuration
+  model_name: "DrBERT"
+  model_checkpoint: "path/to/drbert/checkpoint"  # Update with actual model path
+  
+  # Inference settings
+  max_sequence_length: 512
+  batch_size: 8
+  device: "cuda"  # or "cpu"
+  
+  # Confidence thresholds
+  confidence_threshold_high: 0.85
+  confidence_threshold_medium: 0.65
+  confidence_threshold_low: 0.45
+  
+  # Date detection settings
+  date_formats:
+    - "%d/%m/%Y"
+    - "%d-%m-%Y"
+    - "%d.%m.%Y"
+    - "%Y-%m-%d"
+  
+  # Text normalization settings
+  remove_headers: true
+  remove_footers: true
+  expand_abbreviations: false
+  
+  # Aggregation settings
+  deduplication_threshold: 0.90  # Similarity threshold for event deduplication
+  temporal_window_days: 7  # Window for grouping similar events

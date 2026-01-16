@@ -1,0 +1,92 @@
+# Medical Document Processing Pipeline - Data Catalog
+# Defines all inputs and outputs for the medical processing pipeline
+
+# ==============================================================================
+# RAW DATA INPUTS
+# ==============================================================================
+
+raw_medical_docs:
+  type: PartitionedDataset
+  path: data/01_raw/medical_docs
+  dataset: text.TextDataset
+  filename_suffix: ".txt"
+  load_args:
+    encoding: "utf-8"
+  metadata:
+    description: "Raw medical documents in PDF or TXT format for OCR processing"
+
+patient_metadata:
+  type: pickle.PickleDataset
+  filepath: data/01_raw/patient_metadata.pkl
+  metadata:
+    description: "Metadata mapping document IDs to patient IDs"
+
+ground_truth:
+  type: pickle.PickleDataset
+  filepath: data/01_raw/ground_truth.pkl
+  metadata:
+    description: "Optional ground truth annotations for evaluation"
+
+# ==============================================================================
+# INTERMEDIATE DATA (Data Engineering Stage)
+# ==============================================================================
+
+extracted_raw_text:
+  type: pickle.PickleDataset
+  filepath: data/02_intermediate/extracted_raw_text.pkl
+  metadata:
+    description: "Raw text extracted from documents via OCR"
+
+primary_harmonized_text:
+  type: pickle.PickleDataset
+  filepath: data/02_intermediate/primary_harmonized_text.pkl
+  metadata:
+    description: "Normalized and cleaned French medical text"
+
+# ==============================================================================
+# INTERMEDIATE DATA (Data Science Stage)
+# ==============================================================================
+
+document_dates:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/document_dates.pkl
+  metadata:
+    description: "Detected dates within each document"
+
+event_predictions:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/event_predictions.pkl
+  metadata:
+    description: "Predicted clinical events (Diagnosis, Treatment, Complications, Follow-up)"
+
+document_level_outputs:
+  type: pickle.PickleDataset
+  filepath: data/04_feature/document_level_outputs.pkl
+  metadata:
+    description: "Document-level outputs with event-date associations"
+
+# ==============================================================================
+# MODEL OUTPUTS (Aggregation & Reporting Stage)
+# ==============================================================================
+
+patient_level_timelines:
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/patient_level_timelines.pkl
+  metadata:
+    description: "Aggregated patient-level chronological timelines"
+
+final_results_with_metadata:
+  type: pickle.PickleDataset
+  filepath: data/06_model_output/final_results_with_metadata.pkl
+  metadata:
+    description: "Final results with confidence flags and metadata"
+
+# ==============================================================================
+# REPORTING OUTPUTS
+# ==============================================================================
+
+performance_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/performance_report.json
+  metadata:
+    description: "Evaluation metrics including Precision, Recall, F1-score, execution time"
