@@ -1,1 +1,1 @@
-# Medical Document Processing Pipeline - Kedro Project
+# Medical Document Processing Pipeline - Initializing repository
